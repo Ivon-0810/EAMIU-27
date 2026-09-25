@@ -26,7 +26,7 @@ jobs:
 
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --noconfirm --onedir --windowed --add-data "app/templates;app/templates" --add-data "app/static;app/static" run.py
+        pyinstaller --noconfirm --onedir --add-data "app/templates;app/templates" --add-data "app/static;app/static" run.py
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
