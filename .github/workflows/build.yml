@@ -2,12 +2,14 @@ name: Build Executable
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
     - uses: actions/checkout@v3
 
@@ -26,9 +28,8 @@ jobs:
       run: |
         pyinstaller --noconfirm --onedir --windowed --add-data "app/templates;app/templates" --add-data "app/static;app/static" run.py
 
-    - name: Upload Release Asset
-      uses: softprops/action-gh-release@v1
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
       with:
-        files: dist/run.exe
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: GestionClub-Windows
+        path: dist/run/
