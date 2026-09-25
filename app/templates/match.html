@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block titre %}Match{% endblock %}
+{% block contenu %}
+<h1>Jour de match</h1>
+<div class="carte" style="text-align:center;">
+    <div id="score" style="font-size:2.2rem; font-weight:700;">
+        {{ match.score_domicile or 0 }} - {{ match.score_exterieur or 0 }}
+    </div>
+    <div id="minute" style="color:var(--texte-att);">{{ match.minute_courante }}'</div>
+    <div style="margin-top:16px;">
+        <button class="btn" id="avancer">Avancer le match</button>
+        <button class="btn btn-sec" id="simuler">Simuler instantanément</button>
+    </div>
+</div>
+<div class="carte">
+    <h3>Fil du match</h3>
+    <ul id="fil"></ul>
+</div>
+
+<script>
+const matchId = {{ match.id }};
+
+document.getElementById('avancer').addEventListener('click', () => {
+    fetch(`/match/${matchId}/avancer`, {method: "POST"})
+        .then(r => r.json()).then(d => {
+            document.getElementById('score').textContent = `${d.score_domicile || 0} - ${d.score_exterieur || 0}`;
+            document.getElementById('minute').textContent = `${d.minute}'`;
+            const fil = document.getElementById('fil');
+            d.evenements.forEach(e => {
+                const li = document.createElement('li');
+                li.textContent = `${e.minute}' — ${e.type} (${e.equipe})`;
+                fil.prepend(li);
+            });
+            if (d.statut === 'mi_temps') alert("Mi-temps ! Tu peux faire tes changements.");
+            if (d.statut === 'termine') alert("Match terminé !");
+        });
+});
+
+document.getElementById('simuler').addEventListener('click', () => {
+    fetch(`/match/${matchId}/simuler`, {method: "POST"})
+        .then(r => r.json()).then(d => {
+            document.getElementById('score').textContent = `${d.score_domicile} - ${d.score_exterieur}`;
+            document.getElementById('minute').textContent = `90'`;
+        });
+});
+</script>
+{% endblock %}

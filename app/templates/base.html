@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block titre %}Gestion Club{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">⚽ Gestion Club</div>
+        <div class="liens">
+            <a href="{{ url_for('main.tableau_de_bord') }}">Tableau de bord</a>
+            <a href="{{ url_for('effectif.voir_effectif') }}">Effectif</a>
+            <a href="{{ url_for('effectif.composition') }}">Composition</a>
+            <a href="{{ url_for('mercato.marche_transferts') }}">Mercato</a>
+            <a href="{{ url_for('mercato.historique') }}">Historique</a>
+        </div>
+    </nav>
+    <main class="contenu">
+        {% block contenu %}{% endblock %}
+    </main>
+</body>
+</html>
